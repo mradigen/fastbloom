@@ -1,4 +1,4 @@
-name: CI
+name: Build and Publish to npm
 env:
   DEBUG: napi:*
   APP_NAME: fastbloom
@@ -71,7 +71,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
       - name: Install Dependencies
         run: npm install
@@ -88,6 +88,6 @@ jobs:
           mkdir -p npm/win32-x64-msvc
           npm run artifacts
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

@@ -27,5 +27,9 @@
 				"aarch64-pc-windows-msvc"
 			]
 		}
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
 	}
 }
