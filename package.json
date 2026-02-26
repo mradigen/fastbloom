@@ -28,6 +28,10 @@
 			]
 		}
 	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mradigen/fastbloom.git"
+	},
 	"publishConfig": {
 		"access": "public",
 		"provenance": true

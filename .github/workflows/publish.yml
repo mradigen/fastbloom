@@ -73,8 +73,8 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install Dependencies
-        run: npm install
+      - run: npm install -g npm@latest
+      - run: npm install
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -88,6 +88,6 @@ jobs:
           mkdir -p npm/win32-x64-msvc
           npm run artifacts
       - name: Publish to npm
-        run: npm publish
+        run: npm publish --provenance
         env:
           NPM_CONFIG_PROVENANCE: true
