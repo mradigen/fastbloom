@@ -82,6 +82,10 @@ jobs:
       - name: Move artifacts
         run: |
           mkdir -p npm
+          mkdir -p npm/darwin-x64
+          mkdir -p npm/linux-x64-gnu
+          mkdir -p npm/linux-x64-musl
+          mkdir -p npm/win32-x64-msvc
           npm run artifacts
       - name: Publish to npm
         run: npm publish --provenance
