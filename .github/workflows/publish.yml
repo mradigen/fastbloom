@@ -53,7 +53,19 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build
-        run: ${{ matrix.settings.build }}
+        run: |
+          if [[ ! -z "${{ matrix.settings.docker }}" ]]; then
+            # If a docker image is defined, run the build INSIDE the container
+            echo "Building inside Docker container..."
+            docker run --rm \
+              -v $(pwd):/project \
+              -w /project \
+              ${{ matrix.settings.docker }} \
+              /bin/bash -c "npm install && ${{ matrix.settings.build }}"
+          else
+            # Otherwise build on the host (Mac/Windows)
+            ${{ matrix.settings.build }}
+          fi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
