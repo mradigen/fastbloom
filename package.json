@@ -14,7 +14,7 @@
 	"files": [
 		"index.js",
 		"index.d.ts",
-		"npm"
+		"*.node"
 	],
 	"napi": {
 		"name": "fastbloom",

@@ -89,9 +89,13 @@ jobs:
           mkdir -p npm/linux-x64-gnu
           mkdir -p npm/linux-x64-musl
           mkdir -p npm/win32-x64-msvc
+
           npm run artifacts
+
           cp artifacts/bindings-x86_64-unknown-linux-gnu/index.js .
           cp artifacts/bindings-x86_64-unknown-linux-gnu/index.d.ts .
+          cp npm/*/*.node .
+          rm -rf npm
       - name: Publish to npm
         run: npm publish --provenance
         env:
