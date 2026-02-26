@@ -11,6 +11,11 @@
   "dependencies": {
     "@napi-rs/cli": "^2.18.0"
   },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "*.node" 
+  ],
   "napi": {
     "name": "fastbloom"
   }
