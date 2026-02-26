@@ -6,9 +6,9 @@
   "scripts": {
     "build": "napi build --platform --release",
     "test": "node test.js",
-	"prepare": "napi build --platform --release"
+    "prepare": "napi build --platform --release"
   },
-  "devDependencies": {
+  "dependencies": {
     "@napi-rs/cli": "^2.18.0"
   },
   "napi": {
