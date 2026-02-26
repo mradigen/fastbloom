@@ -53,6 +53,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build
+        shell: bash
         run: |
           if [[ ! -z "${{ matrix.settings.docker }}" ]]; then
             # If a docker image is defined, run the build INSIDE the container
@@ -61,7 +62,7 @@ jobs:
               -v $(pwd):/project \
               -w /project \
               ${{ matrix.settings.docker }} \
-              /bin/bash -c "npm install && ${{ matrix.settings.build }}"
+              /bin/bash -c "rustup update stable && npm install && ${{ matrix.settings.build }}"
           else
             # Otherwise build on the host (Mac/Windows)
             ${{ matrix.settings.build }}
