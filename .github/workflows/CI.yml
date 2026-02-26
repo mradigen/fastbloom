@@ -88,6 +88,6 @@ jobs:
           mkdir -p npm/win32-x64-msvc
           npm run artifacts
       - name: Publish to npm
-        run: npm publish --provenance
+        run: npm publish --provenance --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
