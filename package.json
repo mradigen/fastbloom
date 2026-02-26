@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "napi build --platform --release",
-    "test": "node test.js"
+    "test": "node test.js",
 	"prepare": "napi build --platform --release"
   },
   "devDependencies": {
