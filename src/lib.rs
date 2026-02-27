@@ -36,6 +36,7 @@ impl BloomFilter {
     /// Adds an item to the Bloom Filter. This method is thread-safe and can be called concurrently from multiple threads.
     /// @param item - The item to be added to the Bloom Filter.
     /// @returns void
+    #[inline]
     #[napi]
     pub fn add(&self, item: String) {
         self.filter.insert(&item);
@@ -44,6 +45,7 @@ impl BloomFilter {
     /// Checks if an item is possibly in the Bloom Filter. This method is thread-safe and can be called concurrently from multiple threads.
     /// @param item - The item to be checked for membership in the Bloom Filter.
     /// @returns A boolean indicating whether the item is possibly in the Bloom Filter (true) or definitely not in the Bloom Filter (false).
+    #[inline]
     #[napi]
     pub fn has(&self, item: String) -> bool {
         self.filter.contains(&item)
