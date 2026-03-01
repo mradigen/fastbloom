@@ -32,27 +32,22 @@ jobs:
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             build: npm run build -- --target x86_64-unknown-linux-gnu --use-napi-cross
-          - host: ubuntu-latest
-            target: x86_64-unknown-linux-musl
-            build: npm run build -- --target x86_64-unknown-linux-musl -x
 
     name: stable - ${{ matrix.settings.target }} - node@22
     runs-on: ${{ matrix.settings.host }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
           targets: ${{ matrix.settings.target }}
-
-#####
       - name: Cache cargo
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry/index/
@@ -62,19 +57,6 @@ jobs:
             .cargo-cache
             target/
           key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
-      - uses: mlugg/setup-zig@v2
-        if: ${{ contains(matrix.settings.target, 'musl') }}
-        with:
-          version: 0.14.1
-      - name: Install cargo-zigbuild
-        uses: taiki-e/install-action@v2
-        if: ${{ contains(matrix.settings.target, 'musl') }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tool: cargo-zigbuild
-######
-  
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
@@ -85,13 +67,39 @@ jobs:
         run: ${{ matrix.settings.build }}
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
+          path: ${{ env.APP_NAME }}.*.node
+          if-no-files-found: error
+
+  build-musl:
+    name: stable - x86_64-unknown-linux-musl - node@22
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/napi-rs/napi/nodejs-rust:lts-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
           path: |
-            ${{ env.APP_NAME }}.*.node
-            index.js
-            index.d.ts
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/.napi-rs
+            .cargo-cache
+            target/
+          key: x86_64-unknown-linux-musl-cargo-ubuntu-latest
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build -- --target x86_64-unknown-linux-musl
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bindings-x86_64-unknown-linux-musl
+          path: ${{ env.APP_NAME }}.*.node
           if-no-files-found: error
 
   publish:
@@ -100,20 +108,22 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    needs: build
+    needs:
+      - build
+      - build-musl
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           registry-url: 'https://registry.npmjs.org'
       - run: npm install -g npm@latest
       - run: npm install
       - run: npm run dirs-setup
       - name: Download all artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
       - name: Move artifacts
