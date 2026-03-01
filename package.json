@@ -6,6 +6,7 @@
 	"scripts": {
 		"build": "napi build --platform --release",
 		"artifacts": "napi artifacts",
+		"dirs-setup": "napi create-npm-dirs",
 		"test": "node test.js"
 	},
 	"files": [
