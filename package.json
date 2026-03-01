@@ -1,6 +1,6 @@
 {
 	"name": "fastbloom",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"description": "High performance Bloom Filter implemented in Rust using fastbloom crate",
 	"main": "index.js",
 	"scripts": {
