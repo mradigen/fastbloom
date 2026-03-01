@@ -8,25 +8,19 @@
 		"artifacts": "napi artifacts",
 		"test": "node test.js"
 	},
-	"devDependencies": {
-		"@napi-rs/cli": "^2.18.0"
-	},
 	"files": [
 		"index.js",
 		"index.d.ts",
 		"*.node"
 	],
 	"napi": {
-		"name": "fastbloom",
-		"triples": {
-			"defaults": true,
-			"additional": [
-				"x86_64-pc-windows-msvc",
-				"x86_64-apple-darwin",
-				"x86_64-unknown-linux-gnu",
-				"x86_64-unknown-linux-musl"
-			]
-		}
+		"binaryName": "fastbloom",
+		"targets": [
+			"x86_64-pc-windows-msvc",
+			"x86_64-apple-darwin",
+			"x86_64-unknown-linux-gnu",
+			"x86_64-unknown-linux-musl"
+		]
 	},
 	"repository": {
 		"type": "git",
@@ -35,5 +29,8 @@
 	"publishConfig": {
 		"access": "public",
 		"provenance": true
+	},
+	"devDependencies": {
+		"@napi-rs/cli": "^3.5.1"
 	}
 }
