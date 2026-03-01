@@ -77,9 +77,15 @@ jobs:
     name: stable - x86_64-unknown-linux-musl - node@22
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+      image: node:22-alpine
     steps:
       - uses: actions/checkout@v4
+      - name: Install build dependencies
+        run: apk add --no-cache build-base python3 curl bash
+      - name: Install Rust
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
       - name: Cache cargo
         uses: actions/cache@v4
         with:
